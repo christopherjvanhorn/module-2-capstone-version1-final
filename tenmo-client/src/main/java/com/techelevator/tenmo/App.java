@@ -85,27 +85,45 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-		
+        // TODO Use transferService class to send request to
+        //      transferController that returns BalanceDTO
+
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
+        /*
+         TODO Use transferService class to send request to
+              transferController that returns TransferDTO
+         */
+
 	}
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
-	}
+		/*
+         TODO Use transferService class to send request to
+              transferController that returns transferRequest
+              where status = Pending
+        */
+
+    }
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		/*
+		 TODO Use transferService class to send request to
+		      transferController that calls helper method
+		      within Transfer model class that checks logic
+		      before using transferDTO to return amount sent
+		 */
 		
 	}
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
+		/*
+		 TODO Use transferService class to send request to
+		      transferController that calls helper method
+		      within Transfer model class that checks logic
+		      before using transferDTO to send request amount
+		 */
 		
 	}
 
