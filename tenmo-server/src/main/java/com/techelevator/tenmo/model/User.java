@@ -16,6 +16,7 @@ public class User {
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
+   //region Constructors, Getters, & Setters
    public User() { }
 
    public User(int id, String username, String password, String authorities) {
@@ -99,4 +100,5 @@ public class User {
               ", authorities=" + authorities +
               '}';
    }
+   //endregion
 }

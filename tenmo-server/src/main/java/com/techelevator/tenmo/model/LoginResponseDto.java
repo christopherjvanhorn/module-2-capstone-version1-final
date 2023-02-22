@@ -10,6 +10,7 @@ public class LoginResponseDto {
     private String token;
     private User user;
 
+    //region Constructors, Getters, & Setters
     public LoginResponseDto(String token, User user) {
         this.token = token;
         this.user = user;
@@ -30,4 +31,5 @@ public class LoginResponseDto {
     public void setUser(User user) {
         this.user = user;
     }
+    //endregion
 }

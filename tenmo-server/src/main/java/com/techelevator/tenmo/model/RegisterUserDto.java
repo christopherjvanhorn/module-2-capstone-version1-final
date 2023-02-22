@@ -14,6 +14,7 @@ public class RegisterUserDto {
     @NotEmpty
     private String password;
 
+    //region Constructors, Getters, & Setters
     public String getUsername() {
         return username;
     }
@@ -29,4 +30,5 @@ public class RegisterUserDto {
     public void setPassword(String password) {
         this.password = password;
     }
+    //endregion
 }

@@ -10,6 +10,7 @@ public class LoginDto {
    private String username;
    private String password;
 
+   //region Constructors, Getters, & Setters
    public String getUsername() {
       return username;
    }
@@ -33,4 +34,5 @@ public class LoginDto {
               ", password='" + password + '\'' +
               '}';
    }
+   //endregion
 }

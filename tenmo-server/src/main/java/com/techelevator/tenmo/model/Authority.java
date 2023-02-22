@@ -6,6 +6,7 @@ public class Authority {
 
    private String name;
 
+   //region Constructors, Getters, & Setters
    public String getName() {
       return name;
    }
@@ -37,4 +38,6 @@ public class Authority {
          "name=" + name +
          '}';
    }
+
+   //endregion
 }
