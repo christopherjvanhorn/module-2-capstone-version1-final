@@ -11,32 +11,38 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 public class AccountService {
-    private final String BASE_URL = "http://localhost:8080/";
+    private final String baseUrl;
     private RestTemplate restTemplate = new RestTemplate();
     private String authToken = null;
+
+    public AccountService(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
     //Zoe
-    public BigDecimal getBalance(int accountId) {
+    public Account getAccountByUserId(int userId) {
         //TODO implement getBalance
         Account account = null;
         try {
             ResponseEntity<Account> response =
-                    restTemplate.exchange(BASE_URL + accountId, HttpMethod.GET, makeAuthEntity(), Account.class);
+                    restTemplate.exchange(baseUrl + userId, HttpMethod.GET, makeAuthEntity(), Account.class);
             account = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return account.getBalance();
+        return account;
     }
+
     //Ashley
     public String getTransferHistory(AuthenticatedUser authenticatedUser){
         //TODO implement getTransferHistory
         return null;
     }
+
     //Chris
     public String viewPendingRequests(AuthenticatedUser authenticatedUser){
         //TODO implement viewPendingRequests
@@ -48,6 +54,7 @@ public class AccountService {
         //TODO implement sendBucks
         return false;
     }
+
     //Anthony
     public boolean requestBucks(AuthenticatedUser authenticatedUser, String username) {
         //TODO implement requestBucks
