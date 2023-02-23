@@ -87,6 +87,7 @@ public class App {
 	private void viewCurrentBalance() {
         // TODO Use transferService class to send request to
         //      transferController that returns BalanceDTO
+        // Zoe's part
 
 	}
 
