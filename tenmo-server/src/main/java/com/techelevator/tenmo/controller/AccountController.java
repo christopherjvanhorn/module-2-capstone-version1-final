@@ -32,6 +32,8 @@ public class AccountController {
 
     @GetMapping()
     public String viewTransferHistory() {
+
+    public String viewTransferHistory() {
         return null;
     }
 
