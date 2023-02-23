@@ -1,16 +1,11 @@
 package com.techelevator.tenmo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 public class Account {
-    @JsonIgnore
+
     private int accountId;
-    @JsonIgnore
     private int userId;
-    @NotBlank(message = "The balance cannot be blank")
     private BigDecimal balance;
 
     //region Constructors, Getters, & Setters

@@ -3,11 +3,11 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import org.springframework.web.client.RestTemplate;
 
-public class TransferService {
+public class AccountService {
     private final String baseUrl;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public TransferService(String baseUrl) {
+    public AccountService(String baseUrl) {
         this.baseUrl = baseUrl;
     }
     //Zoe
@@ -25,6 +25,7 @@ public class TransferService {
         //TODO implement viewPendingRequests
         return null;
     }
+
     //Anthony
     public boolean sendBucks(AuthenticatedUser authenticatedUser, String username) {
         //TODO implement sendBucks
