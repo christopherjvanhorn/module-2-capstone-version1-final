@@ -14,8 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.List;
+import java.util.List;
 
 @RestController
+@RequestMapping("")
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("")
 @PreAuthorize("isAuthenticated()")
 public class AccountController {
@@ -23,6 +26,11 @@ public class AccountController {
     TransferDao transferDao;
     AccountDao accountDao;
     UserDao userDao;
+    TransferDao transferDao;
+    AccountDao accountDao;
+    UserDao userDao;
+
+    public AccountController(TransferDao transferDao, AccountDao accountDao, UserDao userDao) {
 
     public AccountController(TransferDao transferDao, AccountDao accountDao, UserDao userDao) {
         this.transferDao = transferDao;
@@ -30,19 +38,8 @@ public class AccountController {
         this.userDao = userDao;
     }
 
-    @GetMapping()
-    public String viewTransferHistory() {
-
-    public String viewTransferHistory() {
-        return null;
-    }
-
-    @GetMapping("pending")
-    public List<Transfer> viewPendingRequests(int currentUserId) {
-        return transferDao.getTransfersByPendingStatus(currentUserId);
-    }
-
     @GetMapping(path = "/{userId}")
+    @PreAuthorize("permitAll")
     public Account getAccountByUserId(@PathVariable int userId) {
         Account account = accountDao.getAccountByUserId(userId);
         if (account == null) {
@@ -51,6 +48,26 @@ public class AccountController {
             return account;
         }
     }
+
+    // @GetMapping()
+    // public String viewTransferHistory(){
+    // return null;
+    // }
+    //
+    // @GetMapping()
+    // public String viewPendingRequests() {
+    // return null;
+    // }
+    //
+    // @PutMapping()
+    // public boolean sendBucks() {
+    // return false;
+    // }
+    //
+    // @PutMapping()
+    // public boolean requestBucks() {
+    // return false;
+    // }
 
     // @GetMapping()
     // public String viewTransferHistory(){

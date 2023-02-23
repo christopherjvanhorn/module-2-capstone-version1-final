@@ -16,6 +16,10 @@ public class AccountService {
         this.baseUrl = baseUrl;
     }
 
+    public AccountService(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
@@ -36,9 +40,17 @@ public class AccountService {
 
     // Ashley
     public String getTransferHistory(AuthenticatedUser authenticatedUser) {
+    // TODO implement getTransferHistory
+
+    // Ashley
+    public String getTransferHistory(AuthenticatedUser authenticatedUser) {
         // TODO implement getTransferHistory
         return null;
     }
+
+    // Chris
+    public String viewPendingRequests(AuthenticatedUser authenticatedUser) {
+    // TODO implement viewPendingRequests
 
     // Chris
     public String viewPendingRequests(AuthenticatedUser authenticatedUser) {
@@ -47,13 +59,17 @@ public class AccountService {
     }
 
     // Anthony
+    // Anthony
     public boolean sendBucks(AuthenticatedUser authenticatedUser, String username) {
         // TODO implement sendBucks
         return false;
     }
 
     // Anthony
+
+    // Anthony
     public boolean requestBucks(AuthenticatedUser authenticatedUser, String username) {
+        // TODO implement requestBucks
         // TODO implement requestBucks
         return false;
     }
