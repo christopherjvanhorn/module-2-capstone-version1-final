@@ -33,7 +33,7 @@ public class JdbcTransferDao implements TransferDao{
                 "FROM transfer t " +
                 "JOIN transfer_type tt USING(transfer_type_id) " +
                 "JOIN transfer_status ts USING(transfer_status_id) " +
-                "WHERE t.account_from = (" +
+                "WHERE t.account_from IN (" +
                         "SELECT account_id " +
                         "FROM account " +
                         "WHERE user_id = ? " +
