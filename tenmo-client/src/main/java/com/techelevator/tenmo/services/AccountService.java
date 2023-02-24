@@ -1,7 +1,10 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 public class AccountService {
     private final String baseUrl;
@@ -38,4 +41,7 @@ public class AccountService {
     }
 
 
+    public List<Transfer> getPendingRequests(int currentUserId) {
+        return restTemplate.getForObject(baseUrl+"pending", List.class, currentUserId);
+    }
 }
