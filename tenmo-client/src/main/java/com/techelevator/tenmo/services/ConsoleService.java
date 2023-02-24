@@ -1,9 +1,12 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -87,5 +90,22 @@ public class ConsoleService {
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
+
+    public void listPendingRequests(List<Transfer> transList) {
+
+        System.out.println("-------------------------------------------\n" +
+                "Pending Transfers\n" +
+                "ID          To                     Amount\n" +
+                "-------------------------------------------");
+        for (Transfer transfer : transList) {
+            User toUser = new User();
+            System.out.printf("%-11d %-22s $%4.2d\n" +
+                    "---------\n" +
+                    "Please enter transfer ID to approve/reject (0 to cancel): ",
+                    transfer.getId(), toUser.getUsername(), transfer.getTransferType());
+        }
+
+    }
+
 
 }

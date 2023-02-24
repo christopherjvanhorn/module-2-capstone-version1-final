@@ -1,5 +1,9 @@
 package com.techelevator.tenmo.controller;
 
+import com.techelevator.tenmo.dao.JdbcAccountDao;
+import com.techelevator.tenmo.dao.JdbcTransferDao;
+import com.techelevator.tenmo.dao.JdbcUserDao;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.Account;
 import org.springframework.http.HttpStatus;
@@ -9,12 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.List;
 
 @RestController
 @RequestMapping("")
 @PreAuthorize("isAuthenticated()")
 public class AccountController {
-    //TODO Add Dao & Dto
+    // TODO Add Dao & Dto
     TransferDao transferDao;
     AccountDao accountDao;
     UserDao userDao;
@@ -25,9 +30,19 @@ public class AccountController {
         this.userDao = userDao;
     }
 
+    @GetMapping()
+    public String viewTransferHistory() {
+        return null;
+    }
+
+    @GetMapping("pending")
+    public List<Transfer> viewPendingRequests() {
+
+
+        return null;
 
     @GetMapping(path = "/{userId}")
-    public Account getAccountByUserId(@PathVariable int userId){
+    public Account getAccountByUserId(@PathVariable int userId) {
         Account account = accountDao.getAccountByUserId(userId);
         if (account == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Account ID.", null);
@@ -36,25 +51,24 @@ public class AccountController {
         }
     }
 
-//    @GetMapping()
-//    public String viewTransferHistory(){
-//        return null;
-//    }
-//
-//    @GetMapping()
-//    public String viewPendingRequests() {
-//        return null;
-//    }
-//
-//    @PutMapping()
-//    public boolean sendBucks() {
-//        return false;
-//    }
-//
-//    @PutMapping()
-//    public boolean requestBucks() {
-//        return false;
-//    }
-
+    // @GetMapping()
+    // public String viewTransferHistory(){
+    // return null;
+    // }
+    //
+    // @GetMapping()
+    // public String viewPendingRequests() {
+    // return null;
+    // }
+    //
+    // @PutMapping()
+    // public boolean sendBucks() {
+    // return false;
+    // }
+    //
+    // @PutMapping()
+    // public boolean requestBucks() {
+    // return false;
+    // }
 
 }

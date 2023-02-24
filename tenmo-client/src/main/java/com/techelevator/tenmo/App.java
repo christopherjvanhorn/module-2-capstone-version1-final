@@ -17,7 +17,7 @@ public class App {
     private final ConsoleService consoleService = new ConsoleService();
     private final AccountService accountService = new AccountService(API_BASE_URL);
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-
+    private final AccountService accountService = new AccountService(API_BASE_URL);
     private AuthenticatedUser currentUser;
     private NumberFormat currency = NumberFormat.getCurrencyInstance();
 
@@ -118,6 +118,7 @@ public class App {
               transferController that returns transferRequest
               where status = Pending
         */
+        consoleService.listPendingRequests(accountService.getPendingRequests(currentUser));
 
     }
 

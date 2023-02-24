@@ -39,6 +39,10 @@ public class Transfer {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getTransferType() {
         return transferType;
     }
@@ -83,8 +87,8 @@ public class Transfer {
     public String toString() {
         return "Transfer{" +
                 "id=" + id +
-                ", transferType=" + transferType +
-                ", transferStatus='" + transferStatus + '\'' +
+                ", transferType='" + transferType + "\'" +
+                ", transferStatus='" + transferStatus + "\'" +
                 ", accountFrom=" + accountFrom +
                 ", accountTo=" + accountTo +
                 ", amount=" + amount +
