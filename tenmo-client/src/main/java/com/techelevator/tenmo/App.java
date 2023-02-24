@@ -118,7 +118,7 @@ public class App {
               transferController that returns transferRequest
               where status = Pending
         */
-        consoleService.listPendingRequests(accountService.getPendingRequests(currentUser));
+        consoleService.listPendingRequests(accountService.getPendingRequests(currentUser.getUser().getId()));
 
     }
 

@@ -36,10 +36,9 @@ public class AccountController {
     }
 
     @GetMapping("pending")
-    public List<Transfer> viewPendingRequests() {
-
-
-        return null;
+    public List<Transfer> viewPendingRequests(int currentUserId) {
+        return transferDao.getTransfersByPendingStatus(currentUserId);
+    }
 
     @GetMapping(path = "/{userId}")
     public Account getAccountByUserId(@PathVariable int userId) {
