@@ -3,9 +3,11 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transfer")
@@ -32,8 +34,10 @@ public class AccountController {
         return null;
     }
 
-    @GetMapping()
-    public String viewPendingRequests() {
+    @GetMapping("pending")
+    public List<Transfer> viewPendingRequests() {
+
+
         return null;
     }
 
