@@ -91,13 +91,13 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-    public void listPendingRequests(List<Transfer> transList) {
+    public void printPendingRequests(List<Transfer> transferList) {
 
         System.out.println("-------------------------------------------\n" +
                 "Pending Transfers\n" +
                 "ID          To                     Amount\n" +
                 "-------------------------------------------");
-        for (Transfer transfer : transList) {
+        for (Transfer transfer : transferList) {
             User toUser = new User();
             System.out.printf("%-11d %-22s $%4.2d\n" +
                     "---------\n" +
