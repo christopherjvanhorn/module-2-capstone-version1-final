@@ -122,24 +122,26 @@ public class App {
 
     }
 
-    private void sendBucks() {
-        /*
-         * TODO Use transferService class to send request to
-         * transferController that calls helper method
-         * within Transfer model class that checks logic
-         * before using transferDTO to return amount sent
-         */
 
-    }
+	private void sendBucks() {
+		/*
+		 TODO Use transferService class to send request to
+		      transferController that calls helper method
+		      within Transfer model class that checks logic
+		      before using transferDTO to return amount sent
+		 */
+        consoleService.printUsersSendList(accountService.getUsers());
+        //accountService.sendBucks(currentUser);
+	}
 
-    private void requestBucks() {
-        /*
-         * TODO Use transferService class to send request to
-         * transferController that calls helper method
-         * within Transfer model class that checks logic
-         * before using transferDTO to send request amount
-         */
-
-    }
+	private void requestBucks() {
+		/*
+		 TODO Use transferService class to send request to
+		      transferController that calls helper method
+		      within Transfer model class that checks logic
+		      before using transferDTO to send request amount
+		 */
+		
+	}
 
 }

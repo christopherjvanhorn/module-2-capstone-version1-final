@@ -8,6 +8,9 @@ import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.UserRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,44 +46,36 @@ public class AccountController {
         }
     }
 
-    // @GetMapping()
-    // public String viewTransferHistory(){
-    // return null;
-    // }
-    //
-    // @GetMapping()
-    // public String viewPendingRequests() {
-    // return null;
-    // }
-    //
-    // @PutMapping()
-    // public boolean sendBucks() {
-    // return false;
-    // }
-    //
-    // @PutMapping()
-    // public boolean requestBucks() {
-    // return false;
-    // }
+//    @GetMapping("balance")
+//    public BigDecimal viewCurrentBalance(){
+//        return null;
+//    }
+//
+//    @GetMapping()
+//    public String viewTransferHistory(){
+//        return null;
+//    }
+//
+//    @GetMapping()
+//    public String viewPendingRequests() {
+//        return null;
+//    }
 
-    // @GetMapping()
-    // public String viewTransferHistory(){
-    // return null;
-    // }
-    //
-    // @GetMapping()
-    // public String viewPendingRequests() {
-    // return null;
-    // }
-    //
-    // @PutMapping()
-    // public boolean sendBucks() {
-    // return false;
-    // }
-    //
-    // @PutMapping()
-    // public boolean requestBucks() {
-    // return false;
-    // }
+    @PutMapping("send")
+    public boolean sendBucks() {
+
+        return false;
+    }
+
+    @PutMapping("request")
+    public boolean requestBucks() {
+        return false;
+    }
+
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        return userDao.findAll();
+    }
+
 
 }

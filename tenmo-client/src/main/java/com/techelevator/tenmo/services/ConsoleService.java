@@ -4,10 +4,13 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.UserRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConsoleService {
 
@@ -108,4 +111,14 @@ public class ConsoleService {
     }
 
 
+    public void printUsersSendList(List<User> users) {
+
+        System.out.printf("-------------------------------------------\n" +
+                          "Users\n" +
+                          "ID          Name\n" +
+                          "-------------------------------------------\n");
+        for (User user : users) {
+            System.out.println(user.getId()+ "        " + user.getUsername());
+        }
+    }
 }
