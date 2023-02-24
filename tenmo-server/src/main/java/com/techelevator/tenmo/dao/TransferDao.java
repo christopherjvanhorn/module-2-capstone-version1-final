@@ -8,5 +8,5 @@ import java.util.Map;
 public interface TransferDao {
     List<Transfer> getTransfersByAccountId(int accountId);
     Transfer getTransfersByTransferId(int transferId);
-    List<Transfer> getTransfersByPendingStatus();
+    List<Transfer> getTransfersByPendingStatus(int currentUserId);
 }

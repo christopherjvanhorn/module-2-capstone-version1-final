@@ -41,7 +41,7 @@ public class AccountService {
     }
 
 
-    public List<Transfer> getPendingRequests() {
-        return restTemplate.getForObject(baseUrl+"pending", List.class);
+    public List<Transfer> getPendingRequests(int currentUserId) {
+        return restTemplate.getForObject(baseUrl+"pending", List.class, currentUserId);
     }
 }
