@@ -11,6 +11,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserRequest;
+import com.techelevator.tenmo.dao.*;
+import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.UserRequest;
+import com.techelevator.tenmo.model.Transfer;
+import org.springframework.data.relational.core.sql.In;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -61,14 +68,32 @@ public class AccountController {
 //        return null;
 //    }
 
-    @PutMapping("send")
-    public boolean sendBucks() {
 
-        return false;
+    @PutMapping("send/{senderUserId}/{userIdToSendTo}/{amount}")
+    public boolean sendBucks(@PathVariable Integer senderUserId,
+                             @PathVariable Integer userIdToSendTo,
+                             @PathVariable BigDecimal amount) {
+        Account sender = accountDao.getAccountByUserId(senderUserId);
+        Account receiver = accountDao.getAccountByUserId(userIdToSendTo);
+
+        if (sender.getBalance().compareTo(amount) >= 0) {
+            sender.setBalance(sender.getBalance().subtract(amount));
+            receiver.setBalance(receiver.getBalance().add(amount));
+            accountDao.updateAccount(sender);
+            accountDao.updateAccount(receiver);
+            //TODO create new transfer
+        } else {
+            throw new IllegalArgumentException("Not enough available funds to send.");
+        }
+        return true;
     }
 
-    @PutMapping("request")
-    public boolean requestBucks() {
+    @PutMapping("request/{requestingUserId}/{userIdToRequestFrom}/{amount}")
+    public boolean requestBucks(@PathVariable Integer requestingUserId,
+                                @PathVariable Integer userIdToRequestFrom,
+                                @PathVariable Integer amount) {
+        Account user = accountDao.getAccountByUserId(requestingUserId);
+        //TODO create new transfer with status PENDING
         return false;
     }
 

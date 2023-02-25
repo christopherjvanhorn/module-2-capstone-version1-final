@@ -110,6 +110,14 @@ public class ConsoleService {
 
     }
 
+    public Integer printSendRequest(){
+        System.out.println("Enter ID of user you are sending to (0 to cancel):");
+        String input = scanner.nextLine();
+        Integer userId = Integer.parseInt(input);
+        return userId;
+    }
+
+
 
     public void printUsersSendList(List<User> users) {
 

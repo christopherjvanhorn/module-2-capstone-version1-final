@@ -10,10 +10,17 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.model.UserRequest;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -21,9 +28,8 @@ import java.util.Objects;
 
 public class AccountService {
     private final String baseUrl;
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
     private String authToken = null;
-
 
     public AccountService(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -60,24 +66,33 @@ public class AccountService {
     }
 
     //Anthony
-    public boolean sendBucks(AuthenticatedUser authenticatedUser, String username) {
+    public boolean sendBucks(AuthenticatedUser authenticatedUser, Integer userIdToSendTo, BigDecimal amount) {
         //TODO implement sendBucks
-        User user =  authenticatedUser.getUser();
-        user.setId(authenticatedUser.getUser().getId());
-        user.setUsername(authenticatedUser.getUser().getUsername());
-
-
+        HttpEntity<AuthenticatedUser> entity = new HttpEntity<>(authenticatedUser);
         try {
-            restTemplate.put(baseUrl + "send", authenticatedUser,HttpMethod.PUT);
+            restTemplate.put(baseUrl + "/transfer/send/" + authenticatedUser.getUser().getId()
+                            + "/" + userIdToSendTo + "/" + amount, authenticatedUser,HttpMethod.PUT, entity);
+            return  true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return false;
-    }
 
-    // Anthony
-    public boolean requestBucks() {
-        // TODO implement requestBucks
+
+    }
+    //Anthony
+    public boolean requestBucks(AuthenticatedUser authenticatedUser, Integer userIdToRequestFrom ,BigDecimal amount) {
+        //TODO implement requestBucks
+        User user =  authenticatedUser.getUser();
+        Integer senderUserId = user.getId();
+
+
+        try {
+            restTemplate.put(baseUrl + "send/" + senderUserId + "/" + userIdToRequestFrom + "/" + amount,
+                    authenticatedUser,HttpMethod.PUT);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
         return false;
     }
 
@@ -108,5 +123,10 @@ public class AccountService {
         return null;
     }
     
-    
+
+    private HttpEntity<Void> makeAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(headers);
+    }
 }

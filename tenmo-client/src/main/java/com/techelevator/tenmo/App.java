@@ -3,6 +3,7 @@ package com.techelevator.tenmo;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -131,7 +132,16 @@ public class App {
 		      before using transferDTO to return amount sent
 		 */
         consoleService.printUsersSendList(accountService.getUsers());
-        //accountService.sendBucks(currentUser);
+        Integer userIdToSendTo = consoleService.promptForInt("Enter ID of user you are sending to(0 to cancel): ");
+        BigDecimal amount = consoleService.promptForBigDecimal("Enter amount:");
+
+        boolean successful = accountService.sendBucks(currentUser, userIdToSendTo, amount);
+        if (successful) {
+            System.out.println("\nAMOUNT SENT SUCCESSFUL.");
+        } else {
+            System.out.println("\nAMOUNT SENT UNSUCCESSFUL");
+        }
+
 	}
 
 	private void requestBucks() {
@@ -141,6 +151,11 @@ public class App {
 		      within Transfer model class that checks logic
 		      before using transferDTO to send request amount
 		 */
+        consoleService.printUsersSendList(accountService.getUsers());
+        Integer userIdToRequestFrom = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
+        BigDecimal amount = consoleService.promptForBigDecimal("Enter amount:");
+        accountService.requestBucks(currentUser, userIdToRequestFrom, amount);
+
 		
 	}
 
