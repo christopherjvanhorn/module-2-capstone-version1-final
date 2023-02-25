@@ -3,6 +3,10 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.util.BasicLogger;
+import org.springframework.http.*;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -12,9 +16,6 @@ public class AccountService {
     private RestTemplate restTemplate = new RestTemplate();
     private String authToken = null;
 
-    public AccountService(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
 
     public AccountService(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -39,46 +40,34 @@ public class AccountService {
     }
 
     // Ashley
-    public String getTransferHistory(AuthenticatedUser authenticatedUser) {
-    // TODO implement getTransferHistory
-
-    // Ashley
-    public String getTransferHistory(AuthenticatedUser authenticatedUser) {
+    public String getTransferHistory( ) {
         // TODO implement getTransferHistory
         return null;
     }
 
     // Chris
-    public String viewPendingRequests(AuthenticatedUser authenticatedUser) {
-    // TODO implement viewPendingRequests
-
-    // Chris
-    public String viewPendingRequests(AuthenticatedUser authenticatedUser) {
+    public String viewPendingRequests() {
         // TODO implement viewPendingRequests
         return null;
     }
 
     // Anthony
-    // Anthony
-    public boolean sendBucks(AuthenticatedUser authenticatedUser, String username) {
+    public boolean sendBucks() {
         // TODO implement sendBucks
         return false;
     }
 
     // Anthony
-
-    // Anthony
-    public boolean requestBucks(AuthenticatedUser authenticatedUser, String username) {
-        // TODO implement requestBucks
+    public boolean requestBucks() {
         // TODO implement requestBucks
         return false;
     }
 
-    private HttpEntity<Account> makeAuctionEntity(Account auction) {
+    private HttpEntity<Account> makeAuctionEntity(Account account) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
-        return new HttpEntity<>(auction, headers);
+        return new HttpEntity<>(account, headers);
     }
 
     private HttpEntity<Void> makeAuthEntity() {

@@ -14,11 +14,9 @@ import java.text.NumberFormat;
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
-
     private final ConsoleService consoleService = new ConsoleService();
     private final AccountService accountService = new AccountService(API_BASE_URL);
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private final AccountService accountService = new AccountService(API_BASE_URL);
     private AuthenticatedUser currentUser;
     private NumberFormat currency = NumberFormat.getCurrencyInstance();
 
@@ -95,12 +93,9 @@ public class App {
     }
 
     private void viewCurrentBalance(int userId) {
-
-    private void viewCurrentBalance(int userId) {
         // TODO Use transferService class to send request to
         // transferController that returns BalanceDTO
         // Zoe's part to push
-        Account account = accountService.getAccountByUserId(userId);
         Account account = accountService.getAccountByUserId(userId);
 
         if (account != null) {

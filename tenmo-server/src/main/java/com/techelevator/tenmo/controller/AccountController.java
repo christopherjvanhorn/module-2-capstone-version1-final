@@ -19,18 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("")
-@PreAuthorize("isAuthenticated()")
 public class AccountController {
     // TODO Add Dao & Dto
     TransferDao transferDao;
     AccountDao accountDao;
     UserDao userDao;
-    TransferDao transferDao;
-    AccountDao accountDao;
-    UserDao userDao;
 
-    public AccountController(TransferDao transferDao, AccountDao accountDao, UserDao userDao) {
 
     public AccountController(TransferDao transferDao, AccountDao accountDao, UserDao userDao) {
         this.transferDao = transferDao;
