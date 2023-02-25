@@ -104,7 +104,7 @@ public class App {
         Account account = accountService.getAccountByUserId(userId);
 
         if (account != null) {
-            System.out.println(account.getBalance());
+            System.out.println(currency.format(account.getBalance()));
         } else {
             consoleService.printErrorMessage();
         }
