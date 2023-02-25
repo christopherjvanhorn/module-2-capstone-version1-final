@@ -8,6 +8,7 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 public class App {
 
@@ -18,6 +19,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
+    private NumberFormat currency = NumberFormat.getCurrencyInstance();
 
     public static void main(String[] args) {
         App app = new App();
@@ -96,7 +98,7 @@ public class App {
         Account account = accountService.getAccountByUserId(userId);
 
         if (account != null) {
-            System.out.println(account.getBalance());
+            System.out.println(currency.format(account.getBalance()));
         } else {
             consoleService.printErrorMessage();
         }
