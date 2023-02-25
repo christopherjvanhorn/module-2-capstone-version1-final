@@ -74,7 +74,6 @@ public class App {
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
                 viewCurrentBalance(currentUser.getUser().getId());
-                viewCurrentBalance(currentUser.getUser().getId());
             } else if (menuSelection == 2) {
                 viewTransferHistory();
             } else if (menuSelection == 3) {

@@ -33,6 +33,7 @@ public class AccountController {
     }
 
     @GetMapping(path = "/{userId}")
+    @PreAuthorize("permitAll")
     public Account getAccountByUserId(@PathVariable int userId) {
         Account account = accountDao.getAccountByUserId(userId);
         if (account == null) {
