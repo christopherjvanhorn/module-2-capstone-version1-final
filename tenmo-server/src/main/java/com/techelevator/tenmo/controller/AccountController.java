@@ -79,7 +79,7 @@ public class AccountController {
     public boolean requestBucks(@PathVariable Integer requestingUserId,
                                 @PathVariable Integer userIdToRequestFrom,
                                 @PathVariable Integer amount) {
-        Account user = accountDao.getAccountByUserId(requestingUserId);
+        Account userRequesting = accountDao.getAccountByUserId(requestingUserId);
         //TODO create new transfer with status PENDING
         return false;
     }

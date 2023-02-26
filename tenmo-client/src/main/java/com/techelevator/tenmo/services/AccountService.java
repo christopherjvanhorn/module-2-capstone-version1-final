@@ -74,13 +74,11 @@ public class AccountService {
     //Anthony
     public boolean requestBucks(AuthenticatedUser authenticatedUser, Integer userIdToRequestFrom ,BigDecimal amount) {
         //TODO implement requestBucks
-        User user =  authenticatedUser.getUser();
-        Integer senderUserId = user.getId();
-
-
+        HttpEntity<AuthenticatedUser> entity = new HttpEntity<>(authenticatedUser);
         try {
-            restTemplate.put(baseUrl + "send/" + senderUserId + "/" + userIdToRequestFrom + "/" + amount,
-                    authenticatedUser,HttpMethod.PUT);
+            restTemplate.put(baseUrl + "/transfer/request/" + authenticatedUser.getUser().getId()
+                            + "/" + userIdToRequestFrom + "/" + amount, authenticatedUser,HttpMethod.PUT, entity);
+            return true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
