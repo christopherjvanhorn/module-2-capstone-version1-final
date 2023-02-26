@@ -6,9 +6,6 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.model.UserRequest;
-import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,15 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
-
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-import com.techelevator.tenmo.model.Transfer;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Objects;
 
 public class AccountService {
     private final String baseUrl;
@@ -96,7 +87,20 @@ public class AccountService {
         return false;
     }
 
-    private HttpEntity<Account> makeAuctionEntity(Account account) {
+    public List<Transfer> getPendingRequests(int currentUserId) {   
+        return restTemplate.getForObject(baseUrl + "pending", List.class, currentUserId);
+    }
+    
+    public List<User> getUsers() {
+        List<User> users = List.of(restTemplate.getForObject(baseUrl + "/transfer/users", User[].class));
+        if (users != null) {
+            return users;
+        }
+        System.out.println( "Could not find users");
+        return null;
+    }
+
+    private HttpEntity<Account> makeAccountEntity(Account account) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
@@ -109,24 +113,4 @@ public class AccountService {
         return new HttpEntity<>(headers);
     }
 
-    public List<Transfer> getPendingRequests(int currentUserId) {   
-        return restTemplate.getForObject(baseUrl + "pending", List.class, currentUserId);
-    }
-    
-    public List<User> getUsers() {
-
-        List<User> users = List.of(restTemplate.getForObject(baseUrl + "/transfer/users", User[].class));
-        if (users != null) {
-            return users;
-        }
-        System.out.println( "Could not find users");
-        return null;
-    }
-    
-
-    private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authToken);
-        return new HttpEntity<>(headers);
-    }
 }

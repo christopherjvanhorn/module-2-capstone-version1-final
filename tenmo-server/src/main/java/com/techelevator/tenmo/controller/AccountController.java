@@ -1,33 +1,20 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.JdbcAccountDao;
-import com.techelevator.tenmo.dao.JdbcTransferDao;
-import com.techelevator.tenmo.dao.JdbcUserDao;
-import com.techelevator.tenmo.model.Transfer;
+
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserRequest;
-import com.techelevator.tenmo.dao.*;
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserRequest;
-import com.techelevator.tenmo.model.Transfer;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.List;
-import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/transfer")
 @PreAuthorize("isAuthenticated()")
 public class AccountController {
     // TODO Add Dao & Dto
@@ -98,6 +85,7 @@ public class AccountController {
     }
 
     @GetMapping("/users")
+    @PreAuthorize("permitAll")
     public List<User> getUsers(){
         return userDao.findAll();
     }

@@ -4,13 +4,10 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.model.UserRequest;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
-import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class ConsoleService {
 
