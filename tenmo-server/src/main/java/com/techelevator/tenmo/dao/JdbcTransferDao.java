@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferRequestDto;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -49,6 +51,24 @@ public class JdbcTransferDao implements TransferDao{
         }
 
         return pendingTransfers;
+    }
+
+    @Override
+    public TransferRequestDto createTransferRequest(TransferRequestDto transfer) {
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                "VALUES (?,?,?,?,?) RETURNING transfer_id;";
+        Integer transferId = null;
+        try {
+            transferId = jdbcTemplate.queryForObject(sql, Integer.class, transfer.getTransferType(), transfer.getTransferStatus(),
+                    transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("User not found to create transfer request.");
+        }
+        if (transferId == null) {
+            return null;
+        }
+        transfer.setId(transferId);
+        return transfer;
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {

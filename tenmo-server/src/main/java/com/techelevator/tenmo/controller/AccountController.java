@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.TransferRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.techelevator.tenmo.dao.UserDao;
@@ -10,6 +11,8 @@ import com.techelevator.tenmo.model.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -56,7 +59,7 @@ public class AccountController {
 //    }
 
 
-    @PutMapping("send/{senderUserId}/{userIdToSendTo}/{amount}")
+    @PostMapping("send/{senderUserId}/{userIdToSendTo}/{amount}")
     public boolean sendBucks(@PathVariable Integer senderUserId,
                              @PathVariable Integer userIdToSendTo,
                              @PathVariable BigDecimal amount) {
@@ -68,21 +71,21 @@ public class AccountController {
             receiver.setBalance(receiver.getBalance().add(amount));
             accountDao.updateAccount(sender);
             accountDao.updateAccount(receiver);
-            //TODO create new transfer
         } else {
             throw new IllegalArgumentException("Not enough available funds to send.");
         }
         return true;
     }
 
-    @PutMapping("request/{requestingUserId}/{userIdToRequestFrom}/{amount}")
-    public boolean requestBucks(@PathVariable Integer requestingUserId,
-                                @PathVariable Integer userIdToRequestFrom,
-                                @PathVariable Integer amount) {
-        Account userRequesting = accountDao.getAccountByUserId(requestingUserId);
-        //TODO create new transfer with status PENDING
-        return false;
+    @PostMapping()
+    public TransferRequestDto createTransfer(@Valid @RequestBody TransferRequestDto transferRequestDto) {
+        if (transferRequestDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+
+        return transferDao.createTransferRequest(transferRequestDto);
     }
+
 
     @GetMapping("/users")
     @PreAuthorize("permitAll")

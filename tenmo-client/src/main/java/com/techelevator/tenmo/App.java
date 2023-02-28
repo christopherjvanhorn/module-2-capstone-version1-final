@@ -6,7 +6,6 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
-
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
@@ -91,13 +90,10 @@ public class App {
     }
 
     private void viewCurrentBalance(int userId) {
-        // TODO Use transferService class to send request to
-        // transferController that returns BalanceDTO
-        // Zoe's part to push
         Account account = accountService.getAccountByUserId(userId);
 
         if (account != null) {
-            System.out.println(currency.format(account.getBalance()));
+            System.out.println("Your current account balance is: " + currency.format(account.getBalance()));
         } else {
             consoleService.printErrorMessage();
         }
@@ -123,38 +119,17 @@ public class App {
 
 
 	private void sendBucks() {
-		/*
-		 TODO Use transferService class to send request to
-		      transferController that calls helper method
-		      within Transfer model class that checks logic
-		      before using transferDTO to return amount sent
-		 */
         consoleService.printUsersSendList(accountService.getUsers());
         Integer userIdToSendTo = consoleService.promptForInt("Enter ID of user you are sending to(0 to cancel): ");
         BigDecimal amount = consoleService.promptForBigDecimal("Enter amount:");
-
-        boolean successful = accountService.sendBucks(currentUser, userIdToSendTo, amount);
-        if (successful) {
-            System.out.println("\nAMOUNT SENT SUCCESSFUL.");
-        } else {
-            System.out.println("\nAMOUNT SENT UNSUCCESSFUL");
-        }
-
+        System.out.println(accountService.sendBucks(currentUser, userIdToSendTo, amount));
 	}
 
 	private void requestBucks() {
-		/*
-		 TODO Use transferService class to send request to
-		      transferController that calls helper method
-		      within Transfer model class that checks logic
-		      before using transferDTO to send request amount
-		 */
         consoleService.printUsersSendList(accountService.getUsers());
-        Integer userIdToRequestFrom = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
+        int userIdToRequestFrom = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
         BigDecimal amount = consoleService.promptForBigDecimal("Enter amount:");
-        accountService.requestBucks(currentUser, userIdToRequestFrom, amount);
-
-		
+        System.out.println(accountService.createTransferRequest(currentUser, userIdToRequestFrom, amount));
 	}
 
 }

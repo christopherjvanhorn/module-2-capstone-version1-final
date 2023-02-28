@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class Transfer {
@@ -9,9 +10,9 @@ public class Transfer {
     private String transferType;
     @NotBlank(message = "TransferStatus cannot be blank.")
     private String transferStatus;
-    @NotBlank(message = "AccountFrom cannot be blank.")
+    @Positive
     private int accountFrom;
-    @NotBlank(message = "AccountTo cannot be blank.")
+    @Positive
     private int accountTo;
 
     private BigDecimal amount;
