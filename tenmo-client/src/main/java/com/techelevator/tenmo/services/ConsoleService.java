@@ -4,10 +4,10 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class ConsoleService {
 
@@ -25,9 +25,17 @@ public class ConsoleService {
     }
 
     public void printGreeting() {
-        System.out.println("*********************");
-        System.out.println("* Welcome to TEnmo! *");
-        System.out.println("*********************");
+        System.out.println(" _       __     __                             __           ____________                    \n" +
+                "| |     / /__  / /________  ____ ___  ___     / /_____     /_  __/ ____/___  ____ ___  ____ \n" +
+                "| | /| / / _ \\/ / ___/ __ \\/ __ `__ \\/ _ \\   / __/ __ \\     / / / __/ / __ \\/ __ `__ \\/ __ \\\n" +
+                "| |/ |/ /  __/ / /__/ /_/ / / / / / /  __/  / /_/ /_/ /    / / / /___/ / / / / / / / / /_/ /\n" +
+                "|__/|__/\\___/_/\\___/\\____/_/ /_/ /_/\\___/   \\__/\\____/    /_/ /_____/_/ /_/_/ /_/ /_/\\____/ ");
+        System.out.println("   _____       ____          ______           __        _____                              ____                                   __\n" +
+                "  / ___/____ _/ __/__       / ____/___ ______/ /_      / ___/___  _______  __________     / __ \\____ ___  ______ ___  ___  ____  / /______\n" +
+                "  \\__ \\/ __ `/ /_/ _ \\     / /_  / __ `/ ___/ __/      \\__ \\/ _ \\/ ___/ / / / ___/ _ \\   / /_/ / __ `/ / / / __ `__ \\/ _ \\/ __ \\/ __/ ___/\n" +
+                " ___/ / /_/ / __/  __/    / __/ / /_/ (__  ) /_ _     ___/ /  __/ /__/ /_/ / /  /  __/  / ____/ /_/ / /_/ / / / / / /  __/ / / / /_(__  )\n" +
+                "/____/\\__,_/_/  \\___( )  /_/    \\__,_/____/\\__/( )   /____/\\___/\\___/\\__,_/_/   \\___/  /_/    \\__,_/\\__, /_/ /_/ /_/\\___/_/ /_/\\__/____/\n" +
+                "                    |/                         |/                                                  /____/                                ");
     }
 
     public void printLoginMenu() {
@@ -107,5 +115,23 @@ public class ConsoleService {
 
     }
 
+    public Integer printSendRequest(){
+        System.out.println("Enter ID of user you are sending to (0 to cancel):");
+        String input = scanner.nextLine();
+        Integer userId = Integer.parseInt(input);
+        return userId;
+    }
 
+
+
+    public void printUsersSendList(List<User> users) {
+
+        System.out.printf("-------------------------------------------\n" +
+                          "Users\n" +
+                          "ID          Name\n" +
+                          "-------------------------------------------\n");
+        for (User user : users) {
+            System.out.println(user.getId()+ "        " + user.getUsername());
+        }
+    }
 }

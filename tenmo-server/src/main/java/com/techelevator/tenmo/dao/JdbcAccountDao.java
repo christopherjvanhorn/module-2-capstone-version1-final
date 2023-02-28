@@ -1,24 +1,18 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import org.springframework.dao.EmptyResultDataAccessException;
-import com.techelevator.tenmo.model.Account;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
-        private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-        public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
-            this.jdbcTemplate = jdbcTemplate;
-        }
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Account> getAllAccounts() {
@@ -32,6 +26,14 @@ public class JdbcAccountDao implements AccountDao {
 
         return accounts;
     }
+
+
+    public boolean updateAccount(Account account) {
+        String sql = "UPDATE account SET balance = ? WHERE user_id = ?;";
+        int numberOfRows = jdbcTemplate.update(sql, account.getBalance(),account.getUserId());
+        return numberOfRows == 1;
+    }
+
 
     @Override
     public Account getAccountByUserId(int userId) {
@@ -53,5 +55,6 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(results.getBigDecimal("balance"));
         return account;
     }
+
 
 }
