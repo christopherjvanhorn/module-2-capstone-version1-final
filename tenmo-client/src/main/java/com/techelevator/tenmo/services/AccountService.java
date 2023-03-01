@@ -11,7 +11,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class AccountService {
@@ -48,9 +50,16 @@ public class AccountService {
     }
 
     // Chris
-    public String viewPendingRequests() {
+    public List<TransferPendingDto> viewPendingRequests(AuthenticatedUser authenticatedUser) {
         // TODO implement viewPendingRequests
-        return null;
+        setAuthToken(authenticatedUser.getToken());
+        try {
+            ResponseEntity<TransferPendingDto[]> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), TransferPendingDto[].class);
+            return List.of(Objects.requireNonNull(response.getBody()));
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return new ArrayList<>();
     }
 
     //Anthony
@@ -104,9 +113,10 @@ public class AccountService {
         return "Request Could Not Be Created";
     }
 
-    public List<Transfer> getPendingRequests(int currentUserId) {   
-        return restTemplate.getForObject(baseUrl + "transfer/pending", List.class, currentUserId);
-    }
+//    Commented out due to redundant method name. see viewPendingTransfers above.
+//    public List<Transfer> getPendingRequests(int currentUserId) {
+//        return restTemplate.getForObject(baseUrl + "transfer/pending", List.class, currentUserId);
+//    }
 
     public String createTransferSend(AuthenticatedUser authenticatedUser, int userIdToRequestFrom ,BigDecimal amount) {
         Account accountRequesting = getAccountByUserId(authenticatedUser.getUser().getId());

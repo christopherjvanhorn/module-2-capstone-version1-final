@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 public class Transfer {
     private int id;
-    private int transferType;
+    private String transferType;
     private String transferStatus;
     private int accountFrom;
     private int accountTo;
@@ -16,7 +16,7 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer(int transferType, String transferStatus,
+    public Transfer(String transferType, String transferStatus,
                     int accountFrom, int accountTo, BigDecimal amount) {
         this.transferType = transferType;
         this.transferStatus = transferStatus;
@@ -25,7 +25,7 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public Transfer(int id, int transferType, String transferStatus,
+    public Transfer(int id, String transferType, String transferStatus,
                     int accountFrom, int accountTo, BigDecimal amount) {
         this.id = id;
         this.transferType = transferType;
@@ -45,11 +45,11 @@ public class Transfer {
         this.id = id;
     }
 
-    public int getTransferType() {
+    public String getTransferType() {
         return transferType;
     }
 
-    public void setTransferType(int transferType) {
+    public void setTransferType(String transferType) {
         this.transferType = transferType;
     }
 

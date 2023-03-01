@@ -2,12 +2,10 @@ package com.techelevator.tenmo.controller;
 
 
 import com.techelevator.tenmo.dao.*;
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.TransferRequestDto;
+import com.techelevator.tenmo.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,10 +51,16 @@ public class AccountController {
 //        return null;
 //    }
 //
-//    @GetMapping()
-//    public String viewPendingRequests() {
-//        return null;
-//    }
+    @GetMapping("/pending/{userId}")
+    public List<TransferPendingDto> viewPendingRequests(@PathVariable Integer userId) {
+        List<TransferPendingDto> pendingTransfers = null;
+        pendingTransfers = transferDao.getTransfersByPendingStatus(userId);
+        if (pendingTransfers != null) {
+            return pendingTransfers;
+        } else {
+            throw new NullPointerException("No pending transfers for the current user");
+        }
+    }
 
 
     @PostMapping("send/{senderUserId}/{userIdToSendTo}/{amount}")
