@@ -12,6 +12,12 @@ public class TransferPendingDto {
     public TransferPendingDto() {
     }
 
+    public TransferPendingDto(int id, String accountTo, BigDecimal amount) {
+        this.id = id;
+        this.accountTo = accountTo;
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }

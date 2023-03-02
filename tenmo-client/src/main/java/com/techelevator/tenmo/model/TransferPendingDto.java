@@ -9,13 +9,13 @@ public class TransferPendingDto {
 
     private BigDecimal amount;
 
-    public TransferPendingDto() {
-    }
-
     public TransferPendingDto(int id, String accountTo, BigDecimal amount) {
         this.id = id;
         this.accountTo = accountTo;
         this.amount = amount;
+    }
+
+    public TransferPendingDto() {
     }
 
     public int getId() {

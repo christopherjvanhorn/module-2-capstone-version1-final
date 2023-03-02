@@ -62,6 +62,20 @@ public class AccountService {
         return new ArrayList<>();
     }
 
+    public Transfer transferRequestApproval(AuthenticatedUser authenticatedUser, int transferId, boolean approved){
+        // TODO implement approveTransferRequest
+        setAuthToken(authenticatedUser.getToken());
+
+
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Transfer.class);
+            return response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return null;
+    }
+
     //Anthony
     public String sendBucks(AuthenticatedUser authenticatedUser, Integer userIdToSendTo, BigDecimal amount) {
         setAuthToken(authenticatedUser.getToken());
@@ -93,17 +107,17 @@ public class AccountService {
 
         int accountRequestingId = accountRequesting.getAccountId();
         int accountFromId = accountFrom.getAccountId();
-        TransferRequestDto newTransfer = null;
+        Transfer newTransfer = null;
         if (accountRequestingId > 0 && accountFromId > 0) {
-            newTransfer = new TransferRequestDto(1, 1, accountFromId, accountRequestingId, amount );
+            newTransfer = new Transfer(1, 1, accountFromId, accountRequestingId, amount );
         } else {
             return  "Could not find users with the given Id";
         }
 
         setAuthToken(authenticatedUser.getToken());
-        HttpEntity<TransferRequestDto> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
+        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
         try {
-            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, TransferRequestDto.class).getBody();
+            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, Transfer.class).getBody();
             return "Request Created.";
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -112,11 +126,6 @@ public class AccountService {
 
         return "Request Could Not Be Created";
     }
-
-//    Commented out due to redundant method name. see viewPendingTransfers above.
-//    public List<Transfer> getPendingRequests(int currentUserId) {
-//        return restTemplate.getForObject(baseUrl + "transfer/pending", List.class, currentUserId);
-//    }
 
     public String createTransferSend(AuthenticatedUser authenticatedUser, int userIdToRequestFrom ,BigDecimal amount) {
         Account accountRequesting = getAccountByUserId(authenticatedUser.getUser().getId());
@@ -127,17 +136,17 @@ public class AccountService {
 
         int accountRequestingId = accountRequesting.getAccountId();
         int accountFromId = accountFrom.getAccountId();
-        TransferRequestDto newTransfer = null;
+        Transfer newTransfer = null;
         if (accountRequestingId > 0 && accountFromId > 0) {
-            newTransfer = new TransferRequestDto(2, 2, accountFromId, accountRequestingId, amount );
+            newTransfer = new Transfer(2, 2, accountFromId, accountRequestingId, amount );
         } else {
             return  "Could not find users with the given Id";
         }
 
         setAuthToken(authenticatedUser.getToken());
-        HttpEntity<TransferRequestDto> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
+        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
         try {
-            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, TransferRequestDto.class).getBody();
+            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, Transfer.class).getBody();
             return "Request Created.";
 
         } catch (RestClientResponseException | ResourceAccessException e) {
