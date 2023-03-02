@@ -67,7 +67,7 @@ public class AccountService {
         setAuthToken(authenticatedUser.getToken());
         try {
             ResponseEntity<Transfer> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Transfer.class);
-            return "Transfer ID: " + transferId + " has been updated.";
+            return "The transfer has been updated.";
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
