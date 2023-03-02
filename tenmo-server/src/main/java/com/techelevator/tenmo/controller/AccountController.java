@@ -66,12 +66,13 @@ public class AccountController {
         Transfer newTransfer = transferDao.getPendingTransfersByTransferId(transferId);
         //if approved: set trans.status to approved, update both account balance
         if (approval){
-            sendBucks(accountDao.getAccountBy newTransfer.getAccountFrom(), newTransfer.)
+            newTransfer.setTransferStatus(2); //Approved
+            transferDao.updateTransferRequest(newTransfer);
+            sendBucks(accountDao.getAccountByAccountId(newTransfer.getAccountFrom()).getUserId(), accountDao.getAccountByAccountId(newTransfer.getAccountTo()).getUserId(), newTransfer.getAmount());
+            return true;
+        } else {
+            newTransfer.setTransferStatus(3); //Rejected
         }
-        //if denied: set trans.status to rejected
-
-
-
         return false;
     }
 

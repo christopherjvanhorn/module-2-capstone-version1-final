@@ -12,4 +12,5 @@ public interface AccountDao {
 
     boolean updateAccount(Account account);
 
+    Account getAccountByAccountId(int accountId);
 }

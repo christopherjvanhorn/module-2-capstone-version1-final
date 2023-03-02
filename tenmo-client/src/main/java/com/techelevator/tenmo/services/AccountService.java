@@ -62,14 +62,12 @@ public class AccountService {
         return new ArrayList<>();
     }
 
-    public Transfer transferRequestApproval(AuthenticatedUser authenticatedUser, int transferId, boolean approved){
-        // TODO implement approveTransferRequest
+    public String transferRequestApproval(AuthenticatedUser authenticatedUser, int transferId, boolean approved){
+        // TODO implement approve&denyTransferRequest
         setAuthToken(authenticatedUser.getToken());
-
-
         try {
             ResponseEntity<Transfer> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Transfer.class);
-            return response.getBody();
+            return "Transfer ID: " + transferId + " has been updated.";
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
