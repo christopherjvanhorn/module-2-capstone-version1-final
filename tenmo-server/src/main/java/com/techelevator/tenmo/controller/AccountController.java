@@ -11,11 +11,11 @@ import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.*;
 import org.springframework.http.HttpStatus;
 import com.techelevator.tenmo.dao.UserDao;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,19 +45,9 @@ public class AccountController {
         }
     }
 
-//    @GetMapping("balance")
-//    public BigDecimal viewCurrentBalance(){
-//        return null;
-//    }
-//
-//    @GetMapping()
-//    public String viewTransferHistory(){
-//        return null;
-//    }
-//
     @GetMapping("/pending/{userId}")
-    public List<TransferPendingDto> viewPendingRequests(@PathVariable Integer userId) {
-        List<TransferPendingDto> pendingTransfers = null;
+    public List<TransferDto> viewPendingRequests(@PathVariable Integer userId) {
+        List<TransferDto> pendingTransfers = null;
         pendingTransfers = transferDao.getTransfersByPendingStatus(userId);
         if (pendingTransfers != null) {
             return pendingTransfers;
@@ -109,25 +99,29 @@ public class AccountController {
         return transferDao.createTransferRequest(transfer);
     }
 
-
     @GetMapping("/users")
     @PreAuthorize("permitAll")
     public List<User> getUsers(){
         return userDao.findAll();
     }
 
-
     @GetMapping("/history/users/{id}")
-    public String viewTransferHistory(@PathVariable int id) {
-        List<Transfer> transfers = transferDao.getTransfersByUserId(id);
+    public List<TransferDto> viewTransferHistory(@PathVariable int id) {
+        List<TransferDto> transfersDto = transferDao.getTransfersByUserId(id);
+        List<TransferDto> transferDtoWithNames = new ArrayList<>();
+
         String output = "Transfer History:  \n";
-        if(transfers.size() == 0) {
+        if(transfersDto.size() == 0) {
             output = "No transfers to display.";
         }
-        for (Transfer t : transfers) {
-            output += t.toString() + "\n";
+        for (TransferDto t : transfersDto) {
+            String fromAccount = userDao.getUserById(accountDao.getAccountByAccountId(t.getAccountFromId()).getUserId()).getUsername();
+            String toAccount = userDao.getUserById(accountDao.getAccountByAccountId(t.getAccountToId()).getUserId()).getUsername();
+            t.setAccountFromUsername(fromAccount);
+            t.setAccountToUsername(toAccount);
+            transferDtoWithNames.add(t);
         }
-        return output;
+        return transferDtoWithNames;
     }
 
 

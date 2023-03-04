@@ -1,7 +1,8 @@
 package com.techelevator.tenmo.services;
 
 
-import com.techelevator.tenmo.model.TransferPendingDto;
+import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.TransferDto;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import java.math.BigDecimal;
@@ -99,15 +100,15 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-    public void printPendingRequests(List<TransferPendingDto> transferPendingList) {
+    public void printPendingRequests(List<TransferDto> transferPendingList) {
 
         System.out.println("-------------------------------------------\n" +
                 "Pending Transfers\n" +
                 "ID          To                     Amount\n" +
                 "-------------------------------------------");
-        for (TransferPendingDto transferPendingDto : transferPendingList) {
+        for (TransferDto transferDto : transferPendingList) {
             System.out.printf("%-11d %-22s $%4.2f\n",
-                    transferPendingDto.getId(), transferPendingDto.getAccountTo(), transferPendingDto.getAmount());
+                    transferDto.getId(), transferDto.getAccountToUsername(), transferDto.getAmount());
         }
         System.out.println("---------\n");
     }
@@ -131,9 +132,46 @@ public class ConsoleService {
             System.out.println(user.getId()+ "        " + user.getUsername());
         }
     }
-    
-    public void printTransferHistory(String transferHistory) {
-        System.out.println(transferHistory);
+
+    public void printTransferHistory(List<TransferDto> transferHistoryList, AuthenticatedUser authenticatedUser) {
+        System.out.printf("-------------------------------------------\n" +
+                "Transfers\n" +
+                "ID          From/To                 Amount\n" +
+                "-------------------------------------------\n");
+        for (TransferDto transferDto : transferHistoryList) {
+            if (transferDto.getAccountToUsername().equals(authenticatedUser.getUser().getUsername())) {
+                System.out.printf("%-11d From: %-16s $%4.2f\n",
+                        transferDto.getId(), transferDto.getAccountFromUsername(), transferDto.getAmount());
+            } else if (transferDto.getAccountFromUsername().equals(authenticatedUser.getUser().getUsername())) {
+                System.out.printf("%-11d To:   %-16s $%4.2f\n",
+                        transferDto.getId(), transferDto.getAccountToUsername(), transferDto.getAmount());
+            } else {
+                System.out.println("It skipped the if");
+            }
+        }
     }
 
+    public void viewTransferDetails(List<TransferDto> listOfTransferDtos, int transferId) {
+        TransferDto transferDetails = listOfTransferDtos.stream().filter(transferDto -> transferDto.getId() == transferId).findFirst().orElse(null);
+        if (transferDetails != null) {
+            System.out.printf(
+                    "--------------------------------------------\n" +
+                            "Transfer Details\n" +
+                            "--------------------------------------------\n" +
+                            " Id: %d\n" +
+                            " From: %s\n" +
+                            " To: %s\n" +
+                            " Type: %s\n" +
+                            " Status: %s\n" +
+                            " Amount: %4.2f\n",
+                    transferDetails.getId(),
+                    transferDetails.getAccountFromUsername(),
+                    transferDetails.getAccountToUsername(),
+                    transferDetails.getTransferType(),
+                    transferDetails.getTransferStatus(),
+                    transferDetails.getAmount());
+        } else {
+            System.out.println("ERROR: Transfer does not exist.");
+        }
+    }
 }

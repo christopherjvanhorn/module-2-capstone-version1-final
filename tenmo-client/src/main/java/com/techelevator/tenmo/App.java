@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -109,9 +106,15 @@ public class App {
          * TODO Use transferService class to send request to
          * transferController that returns TransferDTO
          */
-        String response = accountService.getTransferHistory(currentUser);
-        consoleService.printTransferHistory(response);
+        List<TransferDto> response = accountService.getTransferHistory(currentUser);
+        consoleService.printTransferHistory(response, currentUser);
 
+        int menuSelection = consoleService.promptForInt(
+                "---------\n" +
+                "Please enter transfer ID to view details (0 to cancel): ");
+        if (menuSelection > 0) {
+            consoleService.viewTransferDetails(response, menuSelection);
+        }
     }
 
     private void viewPendingRequests() {
@@ -149,6 +152,10 @@ public class App {
 	private void sendBucks() {
         consoleService.printUsersSendList(accountService.getUsers());
         Integer userIdToSendTo = consoleService.promptForInt("Enter ID of user you are sending to(0 to cancel): ");
+        if (userIdToSendTo == currentUser.getUser().getId()) {
+            System.out.println("Cannot send to same account");
+            return;
+        }
         BigDecimal amount = consoleService.promptForBigDecimal("Enter amount:");
         System.out.println(accountService.sendBucks(currentUser, userIdToSendTo, amount));
 	}
