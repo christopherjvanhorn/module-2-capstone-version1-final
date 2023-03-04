@@ -37,28 +37,28 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
 
     @Test
     public void createTransferRequestTest() {
-        TransferRequestDto transfer = new TransferRequestDto(1,1,
+        Transfer transfer = new Transfer(1,1,
                                                              ACCOUNT_1.getAccountId(),ACCOUNT_2.getAccountId(),
                                                             BigDecimal.TEN);
-        TransferRequestDto transferCreated = sut.createTransferRequest(transfer);
+        Transfer transferCreated = sut.createTransferRequest(transfer);
         Assert.assertEquals(transfer, transferCreated);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void createTransferRequest_With_Unregistered_User_Returns_DataIntegrityViolation(){
-        TransferRequestDto transfer = new TransferRequestDto(1,1,
+        Transfer transfer = new Transfer(1,1,
                 ACCOUNT_NO_USER.getAccountId(),ACCOUNT_2.getAccountId(),
                 BigDecimal.TEN);
-        TransferRequestDto transferRequestDto = sut.createTransferRequest(transfer);
+        Transfer transferRequestDto = sut.createTransferRequest(transfer);
 
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void createTransferRequest_With_NullValue_Returns_DataIntegrityViolation() {
-        TransferRequestDto transfer = new TransferRequestDto(1,1,
+        Transfer transfer = new Transfer(1,1,
                 ACCOUNT_3.getAccountId(), ACCOUNT_2.getAccountId(),
                 null);
-        TransferRequestDto transferRequestDto = sut.createTransferRequest(transfer);
+        Transfer transferRequestDto = sut.createTransferRequest(transfer);
     }
 
 

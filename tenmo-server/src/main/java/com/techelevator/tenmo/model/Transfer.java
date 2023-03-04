@@ -1,43 +1,30 @@
 package com.techelevator.tenmo.model;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class Transfer {
     private int id;
-    @NotBlank(message = "TransferType cannot be blank.")
-    private String transferType;
-    @NotBlank(message = "TransferStatus cannot be blank.")
-    private String transferStatus;
+    @Positive
+    private int transferType;
+    @Positive
+    private int transferStatus;
     @Positive
     private int accountFrom;
     @Positive
     private int accountTo;
-
+    @Positive(message = "Amount entered must be positive")
     private BigDecimal amount;
 
-    //region Contructors, Getters, and Setters
+    public Transfer(int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal amount) {
+        this.transferType = transferType;
+        this.transferStatus = transferStatus;
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
+        this.amount = amount;
+    }
+
     public Transfer() {
-    }
-
-    public Transfer(String transferType, String transferStatus,
-                    int accountFrom, int accountTo, BigDecimal amount) {
-        this.transferType = transferType;
-        this.transferStatus = transferStatus;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.amount = amount;
-    }
-
-    public Transfer(int id, String transferType, String transferStatus,
-                    int accountFrom, int accountTo, BigDecimal amount) {
-        this.id = id;
-        this.transferType = transferType;
-        this.transferStatus = transferStatus;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.amount = amount;
     }
 
     public int getId() {
@@ -48,19 +35,19 @@ public class Transfer {
         this.id = id;
     }
 
-    public String getTransferType() {
+    public int getTransferType() {
         return transferType;
     }
 
-    public void setTransferType(String transferType) {
+    public void setTransferType(int transferType) {
         this.transferType = transferType;
     }
 
-    public String getTransferStatus() {
+    public int getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(String transferStatus) {
+    public void setTransferStatus(int transferStatus) {
         this.transferStatus = transferStatus;
     }
 

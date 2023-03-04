@@ -4,12 +4,12 @@ import com.techelevator.tenmo.model.Transfer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.techelevator.tenmo.dao.*;
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.TransferRequestDto;
+import com.techelevator.tenmo.model.*;
 import org.springframework.http.HttpStatus;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.User;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,7 +41,42 @@ public class AccountController {
         }
     }
 
+//    @GetMapping("balance")
+//    public BigDecimal viewCurrentBalance(){
+//        return null;
+//    }
+//
+//    @GetMapping()
+//    public String viewTransferHistory(){
+//        return null;
+//    }
+//
+    @GetMapping("/pending/{userId}")
+    public List<TransferPendingDto> viewPendingRequests(@PathVariable Integer userId) {
+        List<TransferPendingDto> pendingTransfers = null;
+        pendingTransfers = transferDao.getTransfersByPendingStatus(userId);
+        if (pendingTransfers != null) {
+            return pendingTransfers;
+        } else {
+            throw new NullPointerException("No pending transfers for the current user");
+        }
+    }
 
+    @PutMapping("{transferId}")
+    public boolean pendingTransferApproval (@PathVariable Integer transferId, boolean approval) {
+        Transfer newTransfer = transferDao.getPendingTransfersByTransferId(transferId);
+        //if approved: set trans.status to approved, update both account balance
+        if (approval){
+            newTransfer.setTransferStatus(2); //Approved
+            transferDao.updateTransferRequest(newTransfer); //update transfer db
+            sendBucks(accountDao.getAccountByAccountId(newTransfer.getAccountFrom()).getUserId(), accountDao.getAccountByAccountId(newTransfer.getAccountTo()).getUserId(), newTransfer.getAmount());
+            return true;
+        } else {
+            newTransfer.setTransferStatus(3); //Rejected
+            transferDao.updateTransferRequest(newTransfer); //update transfer db
+        }
+        return false;
+    }
 
     @PostMapping("send/{senderUserId}/{userIdToSendTo}/{amount}")
     public boolean sendBucks(@PathVariable Integer senderUserId,
@@ -62,12 +97,12 @@ public class AccountController {
     }
 
     @PostMapping()
-    public TransferRequestDto createTransfer(@Valid @RequestBody TransferRequestDto transferRequestDto) {
-        if (transferRequestDto.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+    public Transfer createTransfer(@Valid @RequestBody Transfer transfer) {
+        if (transfer.getAmount().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Amount must be greater than 0");
         }
 
-        return transferDao.createTransferRequest(transferRequestDto);
+        return transferDao.createTransferRequest(transfer);
     }
 
 

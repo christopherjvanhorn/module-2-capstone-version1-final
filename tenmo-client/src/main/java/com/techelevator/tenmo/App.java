@@ -115,15 +115,36 @@ public class App {
     }
 
     private void viewPendingRequests() {
-        /*
-         * TODO Use transferService class to send request to
+        /* TODO Use transferService class to send request to
          * transferController that returns transferRequest
          * where status = Pending
          */
-        consoleService.printPendingRequests(accountService.getPendingRequests(currentUser.getUser().getId()));
+        consoleService.printPendingRequests(accountService.viewPendingRequests(currentUser));
 
+        Integer transferIdToApproveDeny = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
+        if (transferIdToApproveDeny > 3000 && transferIdToApproveDeny < 4000) {
+            //approve/deny menu call
+            int menuSelection = consoleService.promptForInt(
+                    "1: Approve\n" +
+                    "2: Reject\n" +
+                    "0: Don't approve or reject\n" +
+                    "---------\n" +
+                    "Please choose an option: ");
+            if (menuSelection == 1) {
+                accountService.transferRequestApproval(currentUser, transferIdToApproveDeny, true);
+            } else if (menuSelection == 2) {
+                accountService.transferRequestApproval(currentUser, transferIdToApproveDeny, false);
+            } else if (menuSelection == 0) {
+                return;
+            } else {
+                System.out.println("Invalid Selection");
+            }
+        } else if (transferIdToApproveDeny < 0 || transferIdToApproveDeny > 0){
+            System.out.println("Please enter a valid transfer ID number.");
+        } else {
+            return;
+        }
     }
-
 
 	private void sendBucks() {
         consoleService.printUsersSendList(accountService.getUsers());
