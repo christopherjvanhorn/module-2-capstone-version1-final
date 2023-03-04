@@ -1,16 +1,21 @@
 package com.techelevator.dao;
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferRequestDto;
 import com.techelevator.tenmo.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.BigDecimalConversion;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Currency;
 
 public class JdbcTransferDaoTests extends BaseDaoTests {
     protected static final User USER_1 = new User(1001, "user1", "user1", "USER");
@@ -20,6 +25,8 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
     private static final  Account ACCOUNT_2 = new Account(1002, 1002);
     private static final  Account ACCOUNT_3 = new Account(1003, 1003);
     private static final Account ACCOUNT_NO_USER = new Account(1004, 1004);
+    private static final Transfer TRANSFER_1 = new Transfer(3001, "Send", "Approved", 1001, 1002, BigDecimal.valueOf(10).setScale(2));
+
     private JdbcTransferDao sut;
 
     @Before
@@ -53,6 +60,7 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
                 null);
         Transfer transferRequestDto = sut.createTransferRequest(transfer);
     }
+
 
 
 

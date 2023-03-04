@@ -6,7 +6,7 @@ import com.techelevator.tenmo.model.Transfer;
 import java.util.List;
 
 public interface TransferDao {
-    List<Transfer> getTransfersByAccountId(int accountId);
+    List<Transfer> getTransfersByUserId(int accountId);
     Transfer getTransfersByTransferId(int transferId);
 
     Transfer getPendingTransfersByTransferId(int transferId);

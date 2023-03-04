@@ -4,7 +4,12 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.*;
 import org.springframework.http.HttpStatus;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import com.techelevator.tenmo.dao.*;
+import com.techelevator.tenmo.model.*;
+import org.springframework.http.HttpStatus;
 import com.techelevator.tenmo.dao.UserDao;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -110,6 +115,22 @@ public class AccountController {
     public List<User> getUsers(){
         return userDao.findAll();
     }
+
+
+    @GetMapping("/history/users/{id}")
+    public String viewTransferHistory(@PathVariable int id) {
+        List<Transfer> transfers = transferDao.getTransfersByUserId(id);
+        String output = "Transfer History:  \n";
+        if(transfers.size() == 0) {
+            output = "No transfers to display.";
+        }
+        for (Transfer t : transfers) {
+            output += t.toString() + "\n";
+        }
+        return output;
+    }
+
+
 
 
 }

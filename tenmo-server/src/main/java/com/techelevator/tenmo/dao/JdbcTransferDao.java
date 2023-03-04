@@ -20,13 +20,38 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public List<Transfer> getTransfersByAccountId(int accountId) {
-        return null;
+    public List<Transfer> getTransfersByUserId(int accountId) {
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.account_from, t.account_to, t.amount " +
+        "FROM transfer t " +
+                "JOIN transfer_type tt USING(transfer_type_id) " +
+                "JOIN transfer_status ts USING(transfer_status_id) " +
+                "JOIN account a ON a.account_id = t.account_from OR a.account_id = t.account_to " +
+                "WHERE a.user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        while (results.next()) {
+            Transfer transfer = mapRowToTransfer(results);
+            transfers.add(transfer);
+        }
+
+        return transfers;
     }
 
     @Override
     public Transfer getTransfersByTransferId(int transferId) {
-        return null;
+        Transfer transfers = new Transfer();
+        String sql = "SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.account_from, t.account_to, t.amount " +
+                "FROM transfer t " +
+                "JOIN transfer_type tt USING(transfer_type_id) " +
+                "JOIN transfer_status ts USING(transfer_status_id) " +
+                "WHERE t.transfer_id = ?;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        while (results.next()) {
+            transfers = mapRowToTransfer(results);
+        }
+        return transfers;
+
     }
 
     @Override

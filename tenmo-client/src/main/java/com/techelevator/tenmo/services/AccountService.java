@@ -3,6 +3,8 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.*;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
+import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,10 +45,30 @@ public class AccountService {
         return account;
     }
 
-    // Ashley
-    public String getTransferHistory( ) {
-        // TODO implement getTransferHistory
+    //Zoe
+    public String getBalance(AuthenticatedUser authenticatedUser) {
+        //TODO implement getBalance
         return null;
+    }
+    //Ashley
+    public String getTransferHistory(AuthenticatedUser authenticatedUser){
+        setAuthToken(authenticatedUser.getToken());
+        String transfers = null;
+        try {
+            ResponseEntity<String> response =
+                    restTemplate.exchange(baseUrl + "transfer/history/users/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), String.class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+            transfers = "ERROR";
+            return transfers;
+        }
+        if(transfers == null) {
+            transfers = "----- No transfer history to display -----";
+            BasicLogger.log("No transfer history");
+        }
+
+        return transfers;
     }
 
     // Chris
@@ -163,9 +185,9 @@ public class AccountService {
         return null;
     }
 
-
+       
     private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders(); 
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
         return new HttpEntity<>(headers);
