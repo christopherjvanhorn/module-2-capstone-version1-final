@@ -51,20 +51,17 @@ public class AccountService {
         return null;
     }
     //Ashley
-    public String getTransferHistory(AuthenticatedUser authenticatedUser){
+    public List<TransferDto> getTransferHistory(AuthenticatedUser authenticatedUser){
         setAuthToken(authenticatedUser.getToken());
-        String transfers = null;
+        List<TransferDto> transfers = new ArrayList<>();
         try {
-            ResponseEntity<String> response =
-                    restTemplate.exchange(baseUrl + "transfer/history/users/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), String.class);
-            transfers = response.getBody();
+            ResponseEntity<TransferDto[]> response =
+                    restTemplate.exchange(baseUrl + "transfer/history/users/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), TransferDto[].class);
+            transfers = List.of(Objects.requireNonNull(response.getBody()));
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
-            transfers = "ERROR";
-            return transfers;
         }
-        if(transfers == null) {
-            transfers = "----- No transfer history to display -----";
+        if(transfers.isEmpty()) {
             BasicLogger.log("No transfer history");
         }
 
@@ -72,11 +69,11 @@ public class AccountService {
     }
 
     // Chris
-    public List<TransferPendingDto> viewPendingRequests(AuthenticatedUser authenticatedUser) {
+    public List<TransferDto> viewPendingRequests(AuthenticatedUser authenticatedUser) {
         // TODO implement viewPendingRequests
         setAuthToken(authenticatedUser.getToken());
         try {
-            ResponseEntity<TransferPendingDto[]> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), TransferPendingDto[].class);
+            ResponseEntity<TransferDto[]> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), TransferDto[].class);
             return List.of(Objects.requireNonNull(response.getBody()));
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
