@@ -1,41 +1,26 @@
 package com.techelevator.tenmo.model;
 
-
 import java.math.BigDecimal;
 
 public class Transfer {
     private int id;
     private int transferType;
-    private String transferStatus;
+    private int transferStatus;
     private int accountFrom;
     private int accountTo;
 
     private BigDecimal amount;
 
-    //region Contructors, Getters, and Setters
+    public Transfer(int transferType, int transferStatus, int accountFrom, int accountTo, BigDecimal amount) {
+        this.transferType = transferType;
+        this.transferStatus = transferStatus;
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
+        this.amount = amount;
+    }
+
     public Transfer() {
     }
-
-    public Transfer(int transferType, String transferStatus,
-                    int accountFrom, int accountTo, BigDecimal amount) {
-        this.transferType = transferType;
-        this.transferStatus = transferStatus;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.amount = amount;
-    }
-
-    public Transfer(int id, int transferType, String transferStatus,
-                    int accountFrom, int accountTo, BigDecimal amount) {
-        this.id = id;
-        this.transferType = transferType;
-        this.transferStatus = transferStatus;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
-        this.amount = amount;
-    }
-
-
 
     public int getId() {
         return id;
@@ -53,11 +38,11 @@ public class Transfer {
         this.transferType = transferType;
     }
 
-    public String getTransferStatus() {
+    public int getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(String transferStatus) {
+    public void setTransferStatus(int transferStatus) {
         this.transferStatus = transferStatus;
     }
 
@@ -84,18 +69,5 @@ public class Transfer {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
-    @Override
-    public String toString() {
-        return "Transfer{" +
-                "id=" + id +
-                ", transferType='" + transferType + "\'" +
-                ", transferStatus='" + transferStatus + "\'" +
-                ", accountFrom=" + accountFrom +
-                ", accountTo=" + accountTo +
-                ", amount=" + amount +
-                '}';
-    }
-    //endregion
 }
 
