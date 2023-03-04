@@ -88,16 +88,17 @@ public class Transfer {
         this.amount = amount;
     }
 
+
     @Override
     public String toString() {
-        return "Transfer{" +
-                "id=" + id +
-                ", transferType='" + transferType + '\'' +
-                ", transferStatus='" + transferStatus + '\'' +
-                ", accountFrom=" + accountFrom +
-                ", accountTo=" + accountTo +
-                ", amount=" + amount +
-                '}';
+        return " ----- Transfer " +
+                " Id - " + id +
+                " | Transfer Type - " + transferType +
+                " | Account From - " + accountFrom +
+                " | Account To - " + accountTo +
+                " | Amount - " + amount +
+                " | Transfer Status - " + transferStatus +
+                " -----";
     }
     //endregion
 }

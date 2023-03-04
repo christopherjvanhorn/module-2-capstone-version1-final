@@ -19,13 +19,38 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public List<Transfer> getTransfersByAccountId(int accountId) {
-        return null;
+    public List<Transfer> getTransfersByUserId(int accountId) {
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.account_from, t.account_to, t.amount " +
+        "FROM transfer t " +
+                "JOIN transfer_type tt USING(transfer_type_id) " +
+                "JOIN transfer_status ts USING(transfer_status_id) " +
+                "JOIN account a ON a.account_id = t.account_from OR a.account_id = t.account_to " +
+                "WHERE a.user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        while (results.next()) {
+            Transfer transfer = mapRowToTransfer(results);
+            transfers.add(transfer);
+        }
+
+        return transfers;
     }
 
     @Override
     public Transfer getTransfersByTransferId(int transferId) {
-        return null;
+        Transfer transfers = new Transfer();
+        String sql = "SELECT t.transfer_id, tt.transfer_type_desc, ts.transfer_status_desc, t.account_from, t.account_to, t.amount " +
+                "FROM transfer t " +
+                "JOIN transfer_type tt USING(transfer_type_id) " +
+                "JOIN transfer_status ts USING(transfer_status_id) " +
+                "WHERE t.transfer_id = ?;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        while (results.next()) {
+            transfers = mapRowToTransfer(results);
+        }
+        return transfers;
+
     }
 
     @Override
@@ -35,14 +60,7 @@ public class JdbcTransferDao implements TransferDao{
                 "FROM transfer t " +
                 "JOIN transfer_type tt USING(transfer_type_id) " +
                 "JOIN transfer_status ts USING(transfer_status_id) " +
-                "WHERE t.account_from IN (" +
-                        "SELECT account_id " +
-                        "FROM account " +
-                        "WHERE user_id = ? " +
-                "AND t.transfer_status_id = (" +
-                        "SELECT transfer_status_id " +
-                        "FROM transfer_status " +
-                        "WHERE transfer_status_desc = 'Pending');";
+                "WHERE t.account_from = ? OR t.account_to = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentUserId);
         while (results.next()) {
@@ -81,5 +99,6 @@ public class JdbcTransferDao implements TransferDao{
         transfer.setAmount(rs.getBigDecimal("amount"));
         return transfer;
     }
+
 
 }
