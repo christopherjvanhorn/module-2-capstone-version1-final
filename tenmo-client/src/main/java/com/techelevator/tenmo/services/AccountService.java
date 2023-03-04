@@ -3,6 +3,8 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.*;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
+import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,7 +13,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class AccountService {
@@ -41,15 +45,54 @@ public class AccountService {
         return account;
     }
 
-    // Ashley
-    public String getTransferHistory( ) {
-        // TODO implement getTransferHistory
+    //Zoe
+    public String getBalance(AuthenticatedUser authenticatedUser) {
+        //TODO implement getBalance
         return null;
+    }
+    //Ashley
+    public String getTransferHistory(AuthenticatedUser authenticatedUser){
+        setAuthToken(authenticatedUser.getToken());
+        String transfers = null;
+        try {
+            ResponseEntity<String> response =
+                    restTemplate.exchange(baseUrl + "transfer/history/users/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), String.class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+            transfers = "ERROR";
+            return transfers;
+        }
+        if(transfers == null) {
+            transfers = "----- No transfer history to display -----";
+            BasicLogger.log("No transfer history");
+        }
+
+        return transfers;
     }
 
     // Chris
-    public String viewPendingRequests() {
+    public List<TransferPendingDto> viewPendingRequests(AuthenticatedUser authenticatedUser) {
         // TODO implement viewPendingRequests
+        setAuthToken(authenticatedUser.getToken());
+        try {
+            ResponseEntity<TransferPendingDto[]> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), TransferPendingDto[].class);
+            return List.of(Objects.requireNonNull(response.getBody()));
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    public String transferRequestApproval(AuthenticatedUser authenticatedUser, int transferId, boolean approved){
+        // TODO implement approve&denyTransferRequest
+        setAuthToken(authenticatedUser.getToken());
+        try {
+            restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.PUT, makeAuthEntity(), Transfer.class);
+            return "The transfer has been updated.";
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
         return null;
     }
 
@@ -84,17 +127,17 @@ public class AccountService {
 
         int accountRequestingId = accountRequesting.getAccountId();
         int accountFromId = accountFrom.getAccountId();
-        TransferRequestDto newTransfer = null;
+        Transfer newTransfer = null;
         if (accountRequestingId > 0 && accountFromId > 0) {
-            newTransfer = new TransferRequestDto(1, 1, accountFromId, accountRequestingId, amount );
+            newTransfer = new Transfer(1, 1, accountFromId, accountRequestingId, amount );
         } else {
             return  "Could not find users with the given Id";
         }
 
         setAuthToken(authenticatedUser.getToken());
-        HttpEntity<TransferRequestDto> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
+        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
         try {
-            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, TransferRequestDto.class).getBody();
+            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, Transfer.class).getBody();
             return "Request Created.";
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -102,10 +145,6 @@ public class AccountService {
         }
 
         return "Request Could Not Be Created";
-    }
-
-    public List<Transfer> getPendingRequests(int currentUserId) {   
-        return restTemplate.getForObject(baseUrl + "transfer/pending", List.class, currentUserId);
     }
 
     public String createTransferSend(AuthenticatedUser authenticatedUser, int userIdToRequestFrom ,BigDecimal amount) {
@@ -117,17 +156,17 @@ public class AccountService {
 
         int accountRequestingId = accountRequesting.getAccountId();
         int accountFromId = accountFrom.getAccountId();
-        TransferRequestDto newTransfer = null;
+        Transfer newTransfer = null;
         if (accountRequestingId > 0 && accountFromId > 0) {
-            newTransfer = new TransferRequestDto(2, 2, accountFromId, accountRequestingId, amount );
+            newTransfer = new Transfer(2, 2, accountFromId, accountRequestingId, amount );
         } else {
             return  "Could not find users with the given Id";
         }
 
         setAuthToken(authenticatedUser.getToken());
-        HttpEntity<TransferRequestDto> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
+        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, makeAuthEntity().getHeaders());
         try {
-            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, TransferRequestDto.class).getBody();
+            restTemplate.exchange(baseUrl + "/transfer",HttpMethod.POST, entity, Transfer.class).getBody();
             return "Request Created.";
 
         } catch (RestClientResponseException | ResourceAccessException e) {
@@ -146,9 +185,9 @@ public class AccountService {
         return null;
     }
 
-
+       
     private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders(); 
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
         return new HttpEntity<>(headers);

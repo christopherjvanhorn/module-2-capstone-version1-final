@@ -79,4 +79,9 @@ INSERT INTO account (account_id, user_id, balance) VALUES ('1001', '1001', 1000)
 INSERT INTO account (account_id, user_id, balance) VALUES ('1002', '1002', 1000);
 INSERT INTO account (account_id, user_id, balance) VALUES ('1003', '1003', 1000);
 
+INSERT INTO transfer(transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) values(3001, 2, 2, 1001, 1002, 10.00);
+INSERT INTO transfer(transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES(3002, 1, 1, 1002, 1003, 50.00);
+
+
+
 COMMIT TRANSACTION;
