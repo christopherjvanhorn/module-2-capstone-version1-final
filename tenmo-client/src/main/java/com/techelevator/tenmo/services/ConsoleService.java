@@ -134,4 +134,9 @@ public class ConsoleService {
             System.out.println(user.getId()+ "        " + user.getUsername());
         }
     }
+    
+    public void printTransferHistory(String transferHistory) {
+        System.out.println(transferHistory);
+    }
+
 }
