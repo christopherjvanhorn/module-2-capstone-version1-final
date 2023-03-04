@@ -66,7 +66,7 @@ public class AccountService {
         // TODO implement approve&denyTransferRequest
         setAuthToken(authenticatedUser.getToken());
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Transfer.class);
+            restTemplate.exchange(baseUrl + "transfer/pending/" + authenticatedUser.getUser().getId(), HttpMethod.PUT, makeAuthEntity(), Transfer.class);
             return "The transfer has been updated.";
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

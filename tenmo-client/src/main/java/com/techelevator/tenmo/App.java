@@ -117,7 +117,8 @@ public class App {
         Integer transferIdToApproveDeny = consoleService.promptForInt("Please enter transfer ID to approve/reject (0 to cancel): ");
         if (transferIdToApproveDeny > 3000 && transferIdToApproveDeny < 4000) {
             //approve/deny menu call
-            int menuSelection = consoleService.promptForInt("1: Approve\n" +
+            int menuSelection = consoleService.promptForInt(
+                    "1: Approve\n" +
                     "2: Reject\n" +
                     "0: Don't approve or reject\n" +
                     "---------\n" +
